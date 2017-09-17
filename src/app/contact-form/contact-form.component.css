@@ -1,0 +1,8 @@
+/*.error{
+    border: 2px solid red;
+}*/
+
+/*below is another way to apply css based on validitiy of element in form */
+.error.ng-invalid.ng-touched{
+    border: 2px solid red;
+}

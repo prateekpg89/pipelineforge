@@ -1,0 +1,101 @@
+<!--<h2>Angular course!!</h2>
+<ul>
+  <li *ngFor="let course of courses">{{ course }}</li>
+</ul>-->
+
+<!--property binding with interpolation
+<h2>{{title}}</h2> -->
+
+<!-- property binding in usual way
+<h2 [textContent]="title"></h2>-->
+
+<!-- property binding requires DOM element property to be mapped with component property, here colspan doesn't exist as property for td
+<table>
+  <tr>
+    <td [colspan]="colSpan">hi</td>
+    <td >hello</td>
+  </tr>
+   <tr>
+    <td >foo</td>
+    <td >bar</td>
+  </tr>
+</table>-->
+
+<!-- we have to tell angular that use property binding to bind component property to HTML element attribute hence called attribute binding 
+<table>
+  <tr>
+    <td [attr.colspan]="colSpan">hi</td>
+    <td >hello</td>
+  </tr>
+   <tr>
+    <td >foo</td>
+    <td >bar</td>
+  </tr>
+</table>-->
+
+<!-- class binding 
+<button class="btn btn-primary" [class.foo]="isFooActive">Save</button> -->
+
+<!-- style binding for HTML element applies styles dynamically 
+<button class="btn btn-primary" [style.backgroundColor]="isBackgroundColor? 'black': 'green'">Save</button> -->
+
+<!-- Event binding
+<button class="btn btn-primary" (click)="onSave($event)">Save</button>-->
+
+<!-- Event filtering 
+<input (keydown.enter)="onKeyPress($event)"/>-->
+
+<!-- getting value of input field in normal way
+<input (keydown.enter)="onKeyPress($event)"/>-->
+
+<!-- getting value of input field in angular way using template variable. email here is anchor to input HTML target 
+<input #email (keydown.enter)="onKeyPress(email.value)"/> -->
+
+<!-- Two way binding using dirty syntax
+<input [value]="email" (keydown.enter)="email=$event.target.value;onKeyPress($event)"/> -->
+
+<!-- Neater way of two way binding
+<input [(ngModel)]="email" (keydown.enter)="onKeyPress($event)"/> -->
+
+<!-- like project
+<i class="fa" [class.fa-star-o]="isFavourite" [class.fa-star]="!isFavourite" (click)="onFavouriteClicked()" aria-hidden="true"></i> -->
+<!-- 
+<div *ngIf="courses.length>0; then courseTemplate else noCourse"></div>
+<ng-template #courseTemplate>Showing courses...</ng-template>
+<ng-template #noCourse>Nothing to show</ng-template> -->
+
+<!-- ngSwitch 
+<ul class="nav nav-pills">
+  <li class="nav-item" [class.active]="viewMode=='map'?true:false">
+    <a class="nav-link" (click)="viewMode='map'">Map View</a>
+  </li>
+  <li class="nav-item" [class.active]="viewMode=='list'?true:false" >
+    <a class="nav-link" (click)="viewMode='list'">ListView</a>
+  </li>
+</ul>
+<div [ngSwitch]="viewMode">
+  <div *ngSwitchCase="'map'">Showing Map view</div>
+  <div *ngSwitchCase="'list'">Showing List view</div>
+  <div *ngSwitchDefault>Other content</div>
+</div> -->
+
+<!-- index variable
+<ul>
+  <li *ngFor="let course of courses; index as i">{{i}}-{{course }}</li>
+</ul> -->
+
+<!-- even/odd/first/last are special boolean variables and have obvious purpose to solve
+<ul>
+  <li *ngFor="let course of courses; even as isEeven" [style.color]="isEeven? 'red': 'blue'">{{course }}</li>
+</ul> -->
+
+<!-- below implementation is costly as it doesn't renders DOM efficiently wrt contents
+<button (click)="loadCourses()">Load Courses</button>
+<ul>
+  <li *ngFor="let course of courses; index as i">{{i}}-{{course }}</li>
+</ul>-->
+
+<button class="btn btn-primary" (click)="loadCourses()">Load Courses</button>
+<ul>
+  <li *ngFor="let course of courses; index as i; trackBy: trackCourse">{{i}}-{{course }}</li>
+</ul>

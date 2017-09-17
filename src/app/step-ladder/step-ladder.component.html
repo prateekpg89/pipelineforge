@@ -1,0 +1,62 @@
+<div class="content">
+<div style="text-align:center" *ngIf="isLoaded=='home'">
+  <h3>Welcome!!</h3>
+  <h4>Visualizing step flows in pipeline projects have never been so easy!!</h4>
+  <h4>Just click on the pipeline projects from drawer on left and see step flows of your project.</h4>
+</div>
+<strong *ngIf="isLoaded=='no'">Loading steps...</strong>
+<div *ngIf="isLoaded=='yes'" class="form-group">
+  <div class="row">
+    <div class="col-sm-12">
+      <strong>Job: </strong>{{buildNo}}
+    </div>
+    <div class="col-sm-4">
+      <strong>Status: </strong>{{currentStatus}}
+    </div>
+    <div class="col-sm-4">
+      <strong>Date: </strong>{{startTime}}
+    </div>
+    <div class="col-sm-4">
+      <strong>Project: </strong>{{projectName}}
+    </div>
+    <hr/>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-responsive">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Action</th>
+              <th>Step name</th>
+              <th>Result</th>
+              <th>Agent(Label)</th>
+              <th>Runtime</th>
+            </tr>
+          </thead>
+          <tbody>
+                      <tr *ngFor="let step of stepDetails; index as i; even as isEven" [style.background-color]="isEven?'rgb(230,230,230)':'white'">
+                        <th>{{i+1}}</th>
+                        <td>
+                          <i *ngIf="step.stepStatus=='--'" 
+                            style="cursor: pointer"
+                            (click)="toggle(i)"
+                            class="fa fa-2x"
+                            [ngClass]="{'fa-pause-circle-o':step.pausePlaySate=='p', 'fa-play-circle-o':step.pausePlaySate=='r'}"
+                            aria-hidden="true"
+                            >
+                          </i>
+                        </td>
+                        <td>{{step.stepName}}</td>
+                        <td><div 
+                        [ngClass]="{'alert-success':step.stepStatus=='Passed', 'alert-danger':step.stepStatus=='Canceled'}"
+                        >{{step.stepStatus}}</div></td>
+                        <td>10.122.32.13</td>
+                        <td>{{step.stepDuration}}</td>
+                      </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>

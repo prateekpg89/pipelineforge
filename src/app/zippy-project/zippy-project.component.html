@@ -1,0 +1,9 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div>{{title}} <!-- gets replaced by the content from consumer app having class selector -->
+    <i style="float:right;cursor:pointer" class="fa" [ngClass]="{'fa-chevron-down': !down, 'fa-chevron-up': down}" aria-hidden="true" (click)="onExpandClick()"></i></div>
+  </div>
+  <div class="panel-body"  *ngIf="down">
+    <ng-content></ng-content>
+  </div>
+</div>

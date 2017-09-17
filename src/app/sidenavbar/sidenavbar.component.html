@@ -1,0 +1,29 @@
+<div class="wrapper" >
+    <nav id="sidebar"  [class.active]="isActive" >
+        <!-- Sidebar Header -->
+        
+        <div class="sidebar-header">
+            <h3>{{heading}}</h3>
+        </div>
+        <!-- Sidebar Links -->
+        <ul class="list-unstyled components">
+            <li *ngFor="let project of projects; index as i" (click)="onClick(i, stepsObj)" [class.active]="i==currentSelectionIndex">
+              <a href="#">{{project.projectName}}</a>
+            </li>
+        </ul>
+    </nav>
+      <!-- Page Content -->
+    <div id="contents" class="col-sm-12">
+        <!-- We'll fill this with dummy content -->
+        <span id="sidebarCollapse" (click)="onToggle()">
+          <i class="fa fa-bars fa-3x" [ngClass]="{'bars':isActive,'times':!isActive}" aria-hidden="true"></i>
+          <i class="fa fa-times fa-3x" [ngClass]="{'bars':!isActive,'times':isActive}" aria-hidden="true"></i>
+        </span>
+        <hr/>
+        <div [ngClass]="{'scrollable':!isActive, 'scrollable-bars':isActive}">
+          <step-ladder [project-name]="projectName" #stepsObj></step-ladder><!-- template variable rescued me here for parent child communication
+            as there was no way to call ALREADY BOOTSTRAPPED child element functions/variables because any other mean was creating new object of
+            child component altogether-->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<h2>My Followers</h2>
+<div class="media" *ngFor="let follower of followers">
+    <div class="media-left">
+      <img src="{{follower.avatar_url}}" class="media-object avatar">
+    </div>
+    <div class="media-body">
+      <h3 class="media-heading">{{follower.login}}</h3>
+      <a [routerLink]="['/followers', follower.login]">{{follower.html_url}}</a> <!-- we now have variable value so we should use property 
+        binding syntax instead of fixed attribute , also as here we need to have variable id for each follower so we need to have sytax like
+        here as an array. First element is root resource and rest items represent url like /<root resource>/:foor/:bar/:... -->
+    </div>
+</div>

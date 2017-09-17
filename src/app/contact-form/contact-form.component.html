@@ -1,0 +1,45 @@
+<form  #f="ngForm" (ngSubmit)="formDirective(f)"> <!-- Angular automatically creates this, but created here to show the contents of FormGroup object 
+created by ngForm directive. To get something from objects, we need to have output property so ngSubmit is the output property(i.e. event)
+which gets triggered by ngForm on submitting the form.  -->
+ <div ngModelGroup="name" #namegroup = "ngModelGroup"> <!-- this makes name as complex object as can be seen from ngForm object printed
+and template variable here is like template variable for ngForm which refers to object containing all the individual controls in it and
+top level validation support which can be used to show validation errors combined -->
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <!-- <input id="firstName" required ngModel type="text" [class.error]="!firstName.valid && firstName.touched" name="firstName" #firstName="ngModel" class="form-control" (change)="onChange(firstName)"> <!-- directive to
+        instruct automatic coding for template driven, name is compulsory here, template variable is to store ngModel object., class error
+        is used here to decorate based on validation state of form, we could use selectors applied by Angular to render this class instead of 
+        conditional class application as below. For this css bust be changed--> 
+      <input id="firstName" required ngModel type="text"  name="firstName" #firstName="ngModel" class="form-control error" (change)="onChange(firstName)">
+      <div class="alert alert-danger" *ngIf="!firstName.valid && firstName.touched">First Name is mandatory</div><!-- required attribute is HTML5 attribute which 
+          makes it necessary to have a field, here template variable is referring to ngModel but
+          it contains control object inside and every properties of control is delegated from ngModel -->
+    </div>
+ </div>
+  <div class="form-group">
+    <label for="comment">Comment</label>
+    <textarea ngModel name="comment" id="comment" cols="30" rows="10" class="form-control"></textarea>
+  </div>
+  <div class="checkbox">
+    <label><input type="checkbox" ngModel name="isSubscribed">Subscribe to mailing list</label>
+  </div>
+  <div class="form-group">
+    <label for="contactMethod">Contact Method</label>
+    <select class="form-control" ngModel required name="contactMethod" id="contactMethod">
+      <option  value=""></option><!--
+      <option *ngFor="let method of contactMethods" [value]="method.id">{{method.name}}</option>-->
+      <option *ngFor="let method of contactMethods" [ngValue]="method">{{method.name}}</option><!--In som cases when we need to store 
+      id and name pair for select, we can use ngValue property which can hold complex objects as value-->
+    </select>
+  </div>
+  <div class="radio" *ngFor="let method of contactMethods">
+    <label>
+      <input ngModel type="radio" name="contactMethod" [value]="method.id">
+      {{method.name}}
+    </label>
+  </div>
+  <p>
+    {{f.value|json}}
+  </p>
+  <button class="btn btn-primary" [disabled]="!f.valid">Submit</button>
+</form>
