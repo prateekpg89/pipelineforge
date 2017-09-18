@@ -22,12 +22,30 @@ export class StepLadderComponent implements OnInit{
   }
 
   toggle(index: number){
-    if(this.stepDetails[index].pausePlaySate == 'r'){
-      this.stepDetails[index].pausePlaySate='p';
-    }else if(this.stepDetails[index].pausePlaySate == 'p'){
-      this.stepDetails[index].pausePlaySate='r';      
+    let url = CommonConfig.getConfigs().docRoot+"/rest/api/steps";
+    if(this.stepDetails[index].pausePlaySate == 'PAUSED'){
+      this.stepDetails[index].pausePlaySate='';
+      this.stepDetails[index].stepStatus='--';
+    }else if(this.stepDetails[index].pausePlaySate == ''){
+      this.stepDetails[index].pausePlaySate='PAUSED';
+      this.stepDetails[index].stepStatus='PAUSED';      
     }
     //TODO: Update DB for status of play/paused
+    this.jenkinsService.update(
+      url, 
+      {
+        "id": this.stepDetails[index].stepId
+      },
+      {
+        "flag": this.stepDetails[index].pausePlaySate
+      }
+    ).subscribe(response=>{
+      if(response.code!="200"){
+        console.log(response.status);
+      }
+    },error=>{
+
+    });
   }
 
   loadStepDetails(){
@@ -37,16 +55,21 @@ export class StepLadderComponent implements OnInit{
       this.isLoaded="yes";
       this.stepDetails.splice(0, this.stepDetails.length);
       let nextIdLength = 0;
-      let pausePlaySate='';
+      let pausePlaySate;
+      let isParallel;
+      let parallelCount=0;
       response.forEach(element => {
+        isParallel=false;
         if(element.stepName=="Parallel"){
           nextIdLength = element.stepNextId.length;
+          parallelCount = nextIdLength;
         }
-        if(element.stepState!='FINISHED'){
-          pausePlaySate='p';
+        if(element.stepState!="FINISHED" && element.stepState!="DISABLED"){
+          pausePlaySate=element.stepStatus;
         }
         if(nextIdLength>0 && element.stepName!="Parallel"){
-          pausePlaySate='';
+          isParallel=true;
+          pausePlaySate=null;
           nextIdLength--;
         }
         console.log(nextIdLength);
@@ -56,7 +79,9 @@ export class StepLadderComponent implements OnInit{
           'stepState' : element.stepState,//to mark if step is disabled
           'stepStatus' : (element.stepStatus==""?'--':element.stepStatus),
           'stepDuration' : this.millisToMinutesAndSeconds(element.stepDurationInMillis),
-          'pausePlaySate': pausePlaySate
+          'pausePlaySate': pausePlaySate, //UI only content
+          'isParallel': isParallel, //UI only content
+          'stepUICount': (element.stepName=="Parallel"?element.stepId:element.stepId-parallelCount)//UI only content
         });
       });
     });

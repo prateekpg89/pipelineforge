@@ -21,7 +21,7 @@ export class JenkinsCoreService {
   }
 
   update(URL, originalResource, changeInResource){
-    return this.http.patch(URL+'/'+originalResource.id, JSON.stringify(changeInResource)).map(response => response.json()).catch(this.handleError);
+    return this.http.put(URL+'/'+originalResource.id, changeInResource).map(response => response.json()).catch(this.handleError);
   }
 
   delete(resource){

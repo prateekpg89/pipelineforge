@@ -16,4 +16,8 @@ export class JenkinsStepService extends JenkinsCoreService{
   getSteps(URL: string){
     return this.jenkinsCoreService.getAll(URL);
   }
+
+  updateStep(URL: string, queryObj:any, newObj:any){
+    return this.jenkinsCoreService.update(URL,queryObj,newObj);
+  }
 }

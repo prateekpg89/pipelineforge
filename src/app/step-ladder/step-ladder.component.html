@@ -35,21 +35,22 @@
             </tr>
           </thead>
           <tbody>
-                      <tr *ngFor="let step of stepDetails; index as i; even as isEven" [style.background-color]="isEven?'rgb(230,230,230)':'white'">
-                        <th>{{i+1}}</th>
+                      <tr *ngFor="let step of stepDetails; index as i; even as isEven" [style.background-color]="isEven ?'rgb(230,230,230)':'white'">
+                        <th *ngIf="step.isParallel"></th>
+                        <th *ngIf="!step.isParallel">{{step.stepUICount}}</th>
                         <td>
-                          <i *ngIf="step.stepStatus=='--'" 
+                          <i *ngIf="step.stepStatus=='--' || step.stepStatus=='PAUSED'" 
                             style="cursor: pointer"
                             (click)="toggle(i)"
                             class="fa fa-2x"
-                            [ngClass]="{'fa-pause-circle-o':step.pausePlaySate=='p', 'fa-play-circle-o':step.pausePlaySate=='r'}"
+                            [ngClass]="{'fa-pause-circle-o':step.pausePlaySate=='', 'fa-play-circle-o':step.pausePlaySate=='PAUSED'}"
                             aria-hidden="true"
                             >
                           </i>
                         </td>
                         <td>{{step.stepName}}</td>
                         <td><div 
-                        [ngClass]="{'alert-success':step.stepStatus=='Passed', 'alert-danger':step.stepStatus=='Canceled'}"
+                        [ngClass]="{'alert-success':step.stepStatus=='Passed', 'alert-warning':step.stepStatus=='PAUSED', 'alert-danger':step.stepStatus=='Canceled'}"
                         >{{step.stepStatus}}</div></td>
                         <td>10.122.32.13</td>
                         <td>{{step.stepDuration}}</td>
